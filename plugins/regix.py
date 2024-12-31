@@ -104,7 +104,7 @@ async def pub_(bot, message):
     await db.add_frwd(user)
     await send(client, user, "<b>Fᴏʀᴡᴀᴅɪɴɢ sᴛᴀʀᴛᴇᴅ🔥</b>")
     sts.add(time=True)
-    sleep = .1 if _bot['is_bot'] else 1
+    sleep = 1 if _bot['is_bot'] else 5
     await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -561,7 +561,7 @@ async def restart_pending_forwads(bot, user):
     except KeyError:
         start = None
     sts.add(time=True, start_time=start)
-    sleep = .1 if _bot['is_bot'] else 1
+    sleep = 1 if _bot['is_bot'] else 5
     #await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -664,7 +664,7 @@ async def restart_forwards(client):
     tasks = []
     async for user in users:
         tasks.append(restart_pending_forwads(client, user))
-    random_seconds = random.randint(0, 30)
+    random_seconds = random.randint(0, 60)
     minutes = random_seconds // 60
     seconds = random_seconds % 60
     await asyncio.gather(*tasks)
