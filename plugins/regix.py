@@ -664,7 +664,7 @@ async def restart_forwards(client):
     tasks = []
     async for user in users:
         tasks.append(restart_pending_forwads(client, user))
-    random_seconds = random.randint(0, 300)
+    random_seconds = random.randint(0, 30)
     minutes = random_seconds // 60
     seconds = random_seconds % 60
     await asyncio.gather(*tasks)
