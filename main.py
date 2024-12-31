@@ -19,7 +19,7 @@ if __name__ == "__main__":
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
-        sleep_threshold=120,
+        sleep_threshold=12,
         plugins=dict(root="plugins")
     )  
     async def iter_messages(
