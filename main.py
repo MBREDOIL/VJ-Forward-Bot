@@ -53,7 +53,7 @@ if __name__ == "__main__":
         """
         current = offset
         while True:
-            new_diff = min(200, limit - current)
+            new_diff = min(20, limit - current)
             if new_diff <= 0:
                 return
             messages = await self.get_messages(chat_id, list(range(current, current+new_diff+1)))
