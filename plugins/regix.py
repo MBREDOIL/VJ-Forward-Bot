@@ -104,7 +104,7 @@ async def pub_(bot, message):
     await db.add_frwd(user)
     await send(client, user, "<b>Fᴏʀᴡᴀᴅɪɴɢ sᴛᴀʀᴛᴇᴅ🔥</b>")
     sts.add(time=True)
-    sleep = 0 if _bot['is_bot'] else 5
+    sleep = .1 if _bot['is_bot'] else 1
     await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -157,7 +157,7 @@ async def pub_(bot, message):
                         or completed <= 100): 
                       await forward(user, client, MSG, m, sts, protect)
                       sts.add('total_files', notcompleted)
-                      await asyncio.sleep(10)
+                      await asyncio.sleep(1)
                       MSG = []
                 else:
                    new_caption = custom_caption(message, caption)
@@ -255,8 +255,8 @@ async def edit(user, msg, title, status, sts):
    now = time.time()
    diff = int(now - i.start)
    speed = sts.divide(i.fetched, diff)
-   elapsed_time = round(diff) * 1000
-   time_to_completion = round(sts.divide(i.total - i.fetched, int(speed))) * 1000
+   elapsed_time = round(diff) * 100
+   time_to_completion = round(sts.divide(i.total - i.fetched, int(speed))) * 100
    estimated_total_time = elapsed_time + time_to_completion  
    progress = "●{0}{1}".format(
        ''.join(["●" for i in range(math.floor(int(percentage) / 4))]),
@@ -561,7 +561,7 @@ async def restart_pending_forwads(bot, user):
     except KeyError:
         start = None
     sts.add(time=True, start_time=start)
-    sleep = 0 if _bot['is_bot'] else 5
+    sleep = .1 if _bot['is_bot'] else 1
     #await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -619,7 +619,7 @@ async def restart_pending_forwads(bot, user):
                         or completed <= 100): 
                       await forward(user, client, MSG, m, sts, protect)
                       sts.add('total_files', notcompleted)
-                      await asyncio.sleep(10)
+                      await asyncio.sleep(1)
                       MSG = []
                 else:
                    new_caption = custom_caption(message, caption)
@@ -720,7 +720,7 @@ async def get_bot_uptime(start_time):
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
-async def complete_time(total_files, files_per_minute=70):
+async def complete_time(total_files, files_per_minute=120):
     minutes_required = total_files / files_per_minute
     seconds_required = minutes_required * 60
     weeks = seconds_required // (7 * 24 * 60 * 60)
