@@ -720,7 +720,7 @@ async def get_bot_uptime(start_time):
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
-async def complete_time(total_files, files_per_minute=200):
+async def complete_time(total_files, files_per_minute=70):
     minutes_required = total_files / files_per_minute
     seconds_required = minutes_required * 60
     weeks = seconds_required // (7 * 24 * 60 * 60)
