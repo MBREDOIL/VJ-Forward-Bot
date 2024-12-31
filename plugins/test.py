@@ -211,7 +211,7 @@ async def iter_messages(
         current = offset
         dup_files = []
         while True:
-            new_diff = min(20, limit - current)
+            new_diff = min(200, limit - current)
             if new_diff <= 0:
                 return
 
