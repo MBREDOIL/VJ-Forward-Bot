@@ -104,7 +104,7 @@ async def pub_(bot, message):
     await db.add_frwd(user)
     await send(client, user, "<b>Fᴏʀᴡᴀᴅɪɴɢ sᴛᴀʀᴛᴇᴅ🔥</b>")
     sts.add(time=True)
-    sleep = 1 if _bot['is_bot'] else 5
+    sleep = 0 if _bot['is_bot'] else 5
     await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -120,7 +120,7 @@ async def pub_(bot, message):
                       await user_db.drop_all()
                       await user_db.close()
                    return
-                if pling %20 == 0: 
+                if pling %200 == 0: 
                    await edit(user, m, 'ᴘʀᴏɢʀᴇssɪɴɢ', 5, sts)
                 pling += 1
                 sts.add('fetched')
@@ -561,7 +561,7 @@ async def restart_pending_forwads(bot, user):
     except KeyError:
         start = None
     sts.add(time=True, start_time=start)
-    sleep = 1 if _bot['is_bot'] else 5
+    sleep = 0 if _bot['is_bot'] else 5
     #await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -582,7 +582,7 @@ async def restart_pending_forwads(bot, user):
                        await user_db.close()
                        return
                     return
-                if pling %20 == 0: 
+                if pling %200 == 0: 
                    await edit(user, m, 'ᴘʀᴏɢʀᴇssɪɴɢ', 5, sts)
                 pling += 1
                 sts.add('fetched')
