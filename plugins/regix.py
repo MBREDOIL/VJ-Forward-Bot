@@ -255,7 +255,7 @@ async def edit(user, msg, title, status, sts):
    now = time.time()
    diff = int(now - i.start)
    speed = sts.divide(i.fetched, diff)
-   elapsed_time = round(diff) * 0
+   elapsed_time = round(diff) * 100
    time_to_completion = round(sts.divide(i.total - i.fetched, int(speed))) * 100
    estimated_total_time = elapsed_time + time_to_completion  
    progress = "●{0}{1}".format(
@@ -405,7 +405,7 @@ def TimeFormatter(milliseconds: int) -> str:
         ((str(minutes) + "m, ") if minutes else "") + \
         ((str(seconds) + "s, ") if seconds else "") + \
         ((str(milliseconds) + "ms, ") if milliseconds else "")
-    return tmp[:-1]
+    return tmp[:-2]
 
 # Don't Remove Credit Tg - @VJ_Botz
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
@@ -470,7 +470,7 @@ async def stop_forward(client, message):
     temp.CANCEL[user_id] = True
     mst = await db.get_forward_details(user_id)
     msg = await client.get_messages(user_id, mst['msg_id'])
-    link = f"tg://openmessage?user_id={6648261085}&message_id={mst['msg_id']}"
+    link = f"tg://openmessage?user_id={6556141430}&message_id={mst['msg_id']}"
     await sts.edit(f"<b>Successfully Canceled </b>", disable_web_page_preview=True)
 
 # Don't Remove Credit Tg - @VJ_Botz
@@ -561,7 +561,7 @@ async def restart_pending_forwads(bot, user):
     except KeyError:
         start = None
     sts.add(time=True, start_time=start)
-    sleep = 1 if _bot['is_bot'] else 5
+    sleep = 1 if _bot['is_bot'] else 10
     #await msg_edit(m, "<code>processing...</code>") 
     temp.IS_FRWD_CHAT.append(i.TO)
     temp.lock[user] = locked = True
@@ -720,7 +720,7 @@ async def get_bot_uptime(start_time):
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
-async def complete_time(total_files, files_per_minute=90):
+async def complete_time(total_files, files_per_minute=60):
     minutes_required = total_files / files_per_minute
     seconds_required = minutes_required * 60
     weeks = seconds_required // (7 * 24 * 60 * 60)
