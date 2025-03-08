@@ -5,6 +5,7 @@ humanize
 motor==2.5.1
 TgCrypto
 Dnspython
+pytz
 pymongo[srv]==3.12.3 
 umongo==3.0.1
 psutil
