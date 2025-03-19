@@ -20,6 +20,11 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 
 @Client.on_message(filters.private & filters.command(["forward"]))
 async def run(bot, message):
+    user_id = message.from_user.id
+    
+    # Authorization Check (Owner and Sudo)
+    if user_id != Config.OWNER_ID and not await db.is_sudo(user_id):
+        return await message.reply("<b>🚫 This command is not allowed to use!</b>")
     buttons = []
     btn_data = {}
     user_id = message.from_user.id
