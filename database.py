@@ -11,6 +11,7 @@ class Db:
         self.col = self.db.users
         self.nfy = self.db.notify
         self.chl = self.db.channels 
+        self.sudo = self.db.sudousers
 
     def new_user(self, id, name):
         return dict(
@@ -21,6 +22,27 @@ class Db:
                 ban_reason="",
             ),
         )
+
+======sudo===========
+
+    # Sudo Users Management
+    async def add_sudo(self, user_id: int):
+        if not await self.is_sudo(user_id):
+            await self.sudo.insert_one({'user_id': user_id})
+
+    async def remove_sudo(self, user_id: int):
+        await self.sudo.delete_one({'user_id': user_id})
+
+    async def is_sudo(self, user_id: int):
+        user = await self.sudo.find_one({'user_id': user_id})
+        return bool(user)
+
+    async def get_all_sudo(self):
+        users = self.sudo.find({})
+        return [user['user_id'] async for user in users]
+
+
+=====complete=========
 
     async def add_user(self, id, name):
         user = self.new_user(id, name)
