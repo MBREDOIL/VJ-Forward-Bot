@@ -23,9 +23,6 @@ class Db:
             ),
         )
 
-======sudo===========
-
-    # Sudo Users Management
     async def add_sudo(self, user_id: int):
         if not await self.is_sudo(user_id):
             await self.sudo.insert_one({'user_id': user_id})
@@ -41,8 +38,6 @@ class Db:
         users = self.sudo.find({})
         return [user['user_id'] async for user in users]
 
-
-=====complete=========
 
     async def add_user(self, id, name):
         user = self.new_user(id, name)
