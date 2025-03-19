@@ -107,7 +107,7 @@ async def run(bot, message):
 
 
 # Owner के लिए Sudo Add/Remove Commands
-@Client.on_message(filters.command("addsudo") & filters.user(Config.OWNER_ID))
+@Client.on_message(filters.command("addsudo") & filters.user(Config.BOT_OWNER))
 async def add_sudo_user(_, message):
     if len(message.command) < 2:
         return await message.reply("⚠️ **Usage:** /addsudo user_id")
@@ -119,12 +119,12 @@ async def add_sudo_user(_, message):
         return await message.reply("❌ **Invalid user ID.**")
     
     if await db.is_sudo(user_id):
-        return await message.reply("ℹ️ यूज़र पहले से ही सूडो है।")
+        return await message.reply("ℹ️ The user is already Sudo.")
     
     await db.add_sudo(user_id)
-    await message.reply(f"✅ {user.mention} को सूडो यूज़र बना दिया गया है!")
+    await message.reply(f"✅ {user.mention} has been made a sudo user!")
 
-@Client.on_message(filters.command("delsudo") & filters.user(Config.OWNER_ID))
+@Client.on_message(filters.command("delsudo") & filters.user(Config.BOT_OWNER))
 async def remove_sudo_user(_, message):
     if len(message.command) < 2:
         return await message.reply("⚠️ **Usage:** /delsudo user_id")
@@ -135,16 +135,16 @@ async def remove_sudo_user(_, message):
         return await message.reply("❌ **Invalid user ID.**")
     
     if not await db.is_sudo(user_id):
-        return await message.reply("ℹ️ यूज़र सूडो यूज़र नहीं है।")
+        return await message.reply("ℹ️ User is not a Sudo user.")
     
     await db.remove_sudo(user_id)
-    await message.reply(f"✅ यूज़र {user_id} का सूडो एक्सेस हटा दिया गया है।")
+    await message.reply(f"✅ The user {user_id }'s Sudo access has been removed.")
 
-# सभी सूडो यूज़र्स की लिस्ट देखने के लिए
-@Client.on_message(filters.command("sudolist") & filters.user(Config.OWNER_ID))
+# To see the list of all Sodo users
+@Client.on_message(filters.command("sudolist") & filters.user(Config.BOT_OWNER))
 async def list_sudo_users(_, message):
     sudo_users = await db.get_all_sudo()
-    text = "📜 **सूडो यूज़र्स की लिस्ट:**\n\n"
+    text = "📜 **List of Sudo Users:**\n\n"
     
     for user_id in sudo_users:
         try:
