@@ -124,7 +124,7 @@ async def add_sudo_user(_, message):
     try:
         user = await Client.get_users(user_id)
         await message.reply(f"✅ {user.mention} has been made a sudo user!")
-    except:
+    except Exception as e:
         await message.reply(f"✅ {user_id} has been made a sudo user, but could not fetch user details. Error: {str(e)}")
     
 @Client.on_message(filters.command("delsudo") & filters.user(Config.BOT_OWNER))
