@@ -114,7 +114,6 @@ async def add_sudo_user(_, message):
     
     try:
         user_id = int(message.command[1])
-        user = await app.get_users(user_id)
     except:
         return await message.reply("❌ **Invalid user ID.**")
     
@@ -123,7 +122,9 @@ async def add_sudo_user(_, message):
     
     await db.add_sudo(user_id)
     await message.reply(f"✅ {user.mention} has been made a sudo user!")
-
+    except:
+    await message.reply(f"✅ {user_id} has been made a sudo user!")
+    
 @Client.on_message(filters.command("delsudo") & filters.user(Config.BOT_OWNER))
 async def remove_sudo_user(_, message):
     if len(message.command) < 2:
