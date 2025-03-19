@@ -121,9 +121,11 @@ async def add_sudo_user(_, message):
         return await message.reply("ℹ️ The user is already Sudo.")
     
     await db.add_sudo(user_id)
-    await message.reply(f"✅ {user.mention} has been made a sudo user!")
+    try:
+        user = await Client.get_users(user_id)
+        await message.reply(f"✅ {user.mention} has been made a sudo user!")
     except:
-    await message.reply(f"✅ {user_id} has been made a sudo user!")
+        await message.reply(f"✅ {user_id} has been made a sudo user, but could not fetch user details. Error: {str(e)}")
     
 @Client.on_message(filters.command("delsudo") & filters.user(Config.BOT_OWNER))
 async def remove_sudo_user(_, message):
@@ -149,7 +151,7 @@ async def list_sudo_users(_, message):
     
     for user_id in sudo_users:
         try:
-            user = await app.get_users(user_id)
+            user = await Client.get_users(user_id)
             text += f"• {user.mention} (`{user_id}`)\n"
         except:
             text += f"• Unknown User (`{user_id}`)\n"
