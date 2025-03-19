@@ -8,6 +8,7 @@ from .utils import STS
 from database import Db, db
 from config import temp 
 from script import Script
+from config import Config
 from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait 
 from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate as PrivateChat
@@ -23,7 +24,7 @@ async def run(bot, message):
     user_id = message.from_user.id
     
     # Authorization Check (Owner and Sudo)
-    if user_id != Config.OWNER_ID and not await db.is_sudo(user_id):
+    if user_id != Config.BOT_OWNER and not await db.is_sudo(user_id):
         return await message.reply("<b>🚫 This command is not allowed to use!</b>")
     buttons = []
     btn_data = {}
