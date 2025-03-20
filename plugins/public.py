@@ -170,7 +170,7 @@ async def start_forwarding(_, message):
     
     # Check if bot can send messages in target channel
     try:
-        await app.send_chat_action(target_chat_id, "typing")
+        await Client.send_chat_action(target_chat_id, "typing")
     except Exception as e:
         return await message.reply(f"❌ Bot doesn't have access to target channel: {e}")
     
