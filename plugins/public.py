@@ -195,17 +195,18 @@ async def start_forwarding(client, message):
     
     await db.start_forward_session(message.from_user.id, target_chat_id)
     await message.reply(f"✅ Auto Forward Started!\nAll messages will be sent to: {target_chat_id}")
-
+    
 @Client.on_message(filters.command(["stopforward"]) & filters.user(Config.BOT_OWNER))
 async def stop_forwarding(_, message):
     await db.stop_forward_session(message.from_user.id)
     await message.reply("❌ Auto Forwarding Stopped!")
 
-@Client.on_message(filters.all & ~filters.service & ~filters.me)
+
+@Client.on_message(filters.group | filters.channel | filters.private & ~filters.service & ~filters.me)
 async def handle_all_messages(client, message):
     # Check if any active forward session
     forward_session = await db.get_forward_session(message.from_user.id)
-    if forward_session or forward_session.get('is_active'):
+    if forward_session or forward_session['is_active']:
 
             # फॉरवर्डिंग को अलग टास्क में रन करें
             asyncio.create_task(
