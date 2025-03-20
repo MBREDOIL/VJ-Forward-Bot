@@ -173,12 +173,6 @@ async def start_forwarding(client, message):
     # Check if bot can send messages in target channel
     try:
         send_message = await client.send_message(chat_id=target_chat_id, text="Testing message")
-        
-        # Wait for a few seconds before deleting
-        await asyncio.sleep(1)
-        
-        # Delete the message
-        await client.delete_message(chat_id=target_chat_id, message_id=sent_.message_id)
 
     except ChatAdminRequired:
         return await message.reply("❌ Bot needs admin permissions in the target channel!")
