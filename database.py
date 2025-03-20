@@ -12,6 +12,7 @@ class Db:
         self.nfy = self.db.notify
         self.chl = self.db.channels 
         self.sudo = self.db.sudousers
+        self.forward_sessions = self.db.logchannel
 
     def new_user(self, id, name):
         return dict(
@@ -23,6 +24,20 @@ class Db:
             ),
         )
 
+    async def start_forward_session(self, user_id: int, target_chat_id: int):
+        await self.forward_sessions.update_one(
+            {'user_id': user_id},
+            {'$set': {'target_chat_id': target_chat_id, 'is_active': True}},
+            upsert=True
+        )
+
+    async def stop_forward_session(self, user_id: int):
+        await self.forward_sessions.delete_one({'user_id': user_id})
+
+    async def get_forward_session(self, user_id: int):
+        return await self.forward_sessions.find_one({'user_id': user_id})
+
+    
     async def add_sudo(self, user_id: int):
         if not await self.is_sudo(user_id):
             await self.sudo.insert_one({'user_id': user_id})
