@@ -175,10 +175,10 @@ async def start_forwarding(_, message):
         await Client.send_message(chat_id=target_chat_id, text="Testing message")
         
         # Wait for a few seconds before deleting
-        time.sleep(1)
+        await asyncio.sleep(1)
         
         # Delete the message
-        bot.delete_message(chat_id=target_chat_id, message_id=sent_message.message_id)
+        await Client.delete_message(chat_id=target_chat_id, message_id=sent_message.message_id)
 
     except Exception as e:
         return await message.reply(f"❌ Bot doesn't have access to target channel: {e}")
