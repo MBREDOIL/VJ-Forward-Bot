@@ -157,3 +157,47 @@ async def list_sudo_users(_, message):
             text += f"• Unknown User (`{user_id}`)\n"
     
     await message.reply(text)
+
+@Client.on_message(filters.command(["startforward"]) & filters.user(Config.BOT_OWNER))
+async def start_forwarding(_, message):
+    if len(message.command) < 2:
+        return await message.reply("⚠️ **Usage:** /startforward channel_id\nExample: /startforward -100123456789")
+    
+    try:
+        target_chat_id = int(message.command[1])
+    except ValueError:
+        return await message.reply("❌ Invalid Channel ID. Must be integer like -100123456789")
+    
+    # Check if bot can send messages in target channel
+    try:
+        await app.send_chat_action(target_chat_id, "typing")
+    except Exception as e:
+        return await message.reply(f"❌ Bot doesn't have access to target channel: {e}")
+    
+    await db.start_forward_session(message.from_user.id, target_chat_id)
+    await message.reply(f"✅ Auto Forward Started!\nAll messages will be sent to: {target_chat_id}")
+
+@Client.on_message(filters.command(["stopforward"]) & filters.user(Config.BOT_OWNER))
+async def stop_forwarding(_, message):
+    await db.stop_forward_session(message.from_user.id)
+    await message.reply("❌ Auto Forwarding Stopped!")
+
+@Client.on_message(filters.all & ~filters.service & ~filters.me)
+async def handle_all_messages(client, message):
+    # Check if any active forward session
+    forward_session = await db.get_forward_session(message.from_user.id)
+    if not forward_session or not forward_session.get('is_active'):
+        return
+    
+    target_chat_id = forward_session['target_chat_id']
+    
+    try:
+        # Try forwarding first
+        await message.forward(target_chat_id)
+    except Exception as e:
+        # If forwarding fails, try copying
+        try:
+            await message.copy(target_chat_id)
+        except Exception as copy_error:
+            print(f"Failed to copy message: {copy_error}")
+            await message.reply(f"❌ Failed to forward/copy message: {copy_error}")
