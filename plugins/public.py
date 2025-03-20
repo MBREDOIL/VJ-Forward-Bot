@@ -202,7 +202,7 @@ async def stop_forwarding(_, message):
     await message.reply("❌ Auto Forwarding Stopped!")
 
 
-@Client.on_message(filters.group | filters.channel | filters.private & ~filters.service & ~filters.me)
+@Client.on_message(filters.all & ~filters.service & ~filters.me)
 async def handle_all_messages(client, message):
     # Check if any active forward session
     forward_session = await db.get_forward_session(message.from_user.id)
