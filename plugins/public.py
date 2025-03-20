@@ -10,6 +10,8 @@ from config import temp
 from script import Script
 from config import Config
 from pyrogram import Client, filters, enums
+from pyrogram.enums import ChatAction
+from pyrogram.types import Message
 from pyrogram.errors import FloodWait 
 from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate as PrivateChat
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, ChatAdminRequired, UsernameInvalid, UsernameNotModified, ChannelPrivate
@@ -170,7 +172,7 @@ async def start_forwarding(_, message):
     
     # Check if bot can send messages in target channel
     try:
-        await Client.send_chat_action(target_chat_id, "typing")
+        await Client.send_chat_action(target_chat_id, ChatAction.TYPING)
     except Exception as e:
         return await message.reply(f"❌ Bot doesn't have access to target channel: {e}")
     
