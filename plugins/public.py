@@ -12,7 +12,7 @@ from config import Config
 from pyrogram import Client, filters, enums
 from pyrogram.enums import ChatAction
 from pyrogram.types import Message
-from pyrogram.errors import FloodWait 
+from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.errors.exceptions.not_acceptable_406 import ChannelPrivate as PrivateChat
 from pyrogram.errors.exceptions.bad_request_400 import ChannelInvalid, ChatAdminRequired, UsernameInvalid, UsernameNotModified, ChannelPrivate
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -161,7 +161,7 @@ async def list_sudo_users(_, message):
     await message.reply(text)
 
 @Client.on_message(filters.command(["startforward"]) & filters.user(Config.BOT_OWNER))
-async def start_forwarding(_, message):
+async def start_forwarding(client, message):
     if len(message.command) < 2:
         return await message.reply("⚠️ **Usage:** /startforward channel_id\nExample: /startforward -100123456789")
     
@@ -172,14 +172,16 @@ async def start_forwarding(_, message):
     
     # Check if bot can send messages in target channel
     try:
-        await Client.send_message(chat_id=target_chat_id, text="Testing message")
+        send_message = await client.send_message(chat_id=target_chat_id, text="Testing message")
         
         # Wait for a few seconds before deleting
         await asyncio.sleep(1)
         
         # Delete the message
-        await Client.delete_message(chat_id=target_chat_id, message_id=sent_message.message_id)
+        await client.delete_message(chat_id=target_chat_id, message_id=sent_message.message_id)
 
+    except ChatAdminRequired:
+        return await message.reply("❌ Bot needs admin permissions in the target channel!")
     except Exception as e:
         return await message.reply(f"❌ Bot doesn't have access to target channel: {e}")
     
