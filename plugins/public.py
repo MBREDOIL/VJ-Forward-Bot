@@ -21,6 +21,20 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
 
+async def forward_messages(client: Client, message: Message, target_chat_id: int):
+    """एक्सेप्शन हैंडलिंग के साथ मैसेज फॉरवर्ड करे"""
+    try:
+        # Try forwarding first
+        await message.forward(target_chat_id)
+    except Exception as e:
+        # If forwarding fails, try copying
+        try:
+            await message.copy(target_chat_id)
+        except Exception as copy_error:
+            print(f"Failed to copy message: {copy_error}")
+            await message.reply(f"❌ Failed to forward/copy message: {copy_error}")
+
+
 @Client.on_message(filters.private & filters.command(["forward"]))
 async def run(bot, message):
     user_id = message.from_user.id
@@ -191,18 +205,9 @@ async def stop_forwarding(_, message):
 async def handle_all_messages(client, message):
     # Check if any active forward session
     forward_session = await db.get_forward_session(message.from_user.id)
-    if not forward_session or not forward_session.get('is_active'):
-        return
-    
-    target_chat_id = forward_session['target_chat_id']
-    
-    try:
-        # Try forwarding first
-        await message.forward(target_chat_id)
-    except Exception as e:
-        # If forwarding fails, try copying
-        try:
-            await message.copy(target_chat_id)
-        except Exception as copy_error:
-            print(f"Failed to copy message: {copy_error}")
-            await message.reply(f"❌ Failed to forward/copy message: {copy_error}")
+    if forward_session or forward_session.get('is_active'):
+
+            # फॉरवर्डिंग को अलग टास्क में रन करें
+            asyncio.create_task(
+                forward_messages(client, message, forward_session['target_chat_id'])
+            )
