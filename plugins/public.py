@@ -178,7 +178,7 @@ async def start_forwarding(client, message):
         await asyncio.sleep(1)
         
         # Delete the message
-        await client.delete_message(chat_id=target_chat_id, message_id=sent_message.message_id)
+        await client.delete_message(chat_id=target_chat_id, message_id=sent_.message_id)
 
     except ChatAdminRequired:
         return await message.reply("❌ Bot needs admin permissions in the target channel!")
